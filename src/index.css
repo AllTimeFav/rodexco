@@ -1,0 +1,119 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Sansation:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'fontttf';
+  src: url('/src/assets/fonts/Arkitech Medium Stencil.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@theme {
+  --font-primary: 'Sansation', sans-serif;
+  --font-secondary: 'Roboto', sans-serif;
+  --font-special: 'fontttf', sans-serif;
+}
+
+/* Custom animation for the glow effect */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+    box-shadow: 12px 0 46px -12px #22d3ee;
+  }
+  to {
+    transform: rotate(360deg);
+    box-shadow: 12px 0 46px -12px #22d3ee;
+  }
+}
+
+/* Animate a one-sided glow orbiting around the button */
+@keyframes orbit-shadow {
+  0% {
+    box-shadow: 12px 0 46px -12px #22d3ee;
+  }
+  25% {
+    box-shadow: 0 12px 46px -12px #22d3ee;
+  }
+  50% {
+    box-shadow: -12px 0 46px -12px #22d3ee;
+  }
+  75% {
+    box-shadow: 0 -12px 16px -12px #22d3ee;
+  }
+  100% {
+    box-shadow: 12px 0 16px -12px #22d3ee;
+  }
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 4s linear infinite;
+}
+
+.glow-button {
+  position: relative;
+  padding: 0.75rem 2rem;
+  background-color: black;
+  color: white;
+  border-radius: 9999px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  border: 1px solid transparent;
+  overflow: hidden;
+  transition: all 0.3s ease-out;
+  /* remove box-shadow orbit to avoid visible resets; use ring + orb instead */
+}
+
+.glow-button:hover {
+  transform: scale(1.05);
+  /* keep orbiting glow; no override */
+}
+
+.glow-button:active {
+  transform: scale(0.95);
+}
+
+.glow-border {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: conic-gradient(from 0deg, #22d3ee 0deg, #0ea5e9 180deg, #22d3ee 360deg);
+  opacity: 0.8;
+  filter: blur(3px);
+  animation: spin-slow 12s linear infinite;
+  will-change: transform;
+  transition: opacity 0.3s;
+}
+
+.glow-button-bg {
+  position: absolute;
+  inset: 1px;
+  border-radius: 9999px;
+  background-color: black;
+}
+
+.glow-button-content {
+  position: relative;
+  z-index: 10;
+}
+
+.glow-inner {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: linear-gradient(to right, rgba(34, 211, 238, 0.3), transparent, rgba(34, 211, 238, 0.3));
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+
+
