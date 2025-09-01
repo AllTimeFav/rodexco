@@ -141,7 +141,7 @@ const Transform = () => {
         <div className="leading-15text-center mt-10 mb-10 relative z-10 px-4">
           <h1
             ref={(el) => (transformHeadingRefs.current[0] = el)}
-            className="text-[clamp(1.6rem,6vw,3.5rem)] tracking-tighter  mt-6"
+            className="text-[clamp(1.5rem,6vw,3.5rem)] tracking-tighter mt-6"
           >
             Transform your passion into profit
           </h1>

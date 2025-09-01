@@ -93,9 +93,9 @@ const Header = () => {
       <div>
         <img
           ref={logoRef}
-          src="/logos.png"
+          src="/logod.png"
           alt="logo"
-          className="w-13 h-13 rotate-180"
+          className="w-13 h-13"
         />
       </div>
     </div>

@@ -11,6 +11,7 @@ const Hero = () => {
   const rightTextRef = useRef(null);
   const paragraphRef = useRef(null);
   const buttonRef = useRef(null);
+  const rightTextSmallRef = useRef(null);
   const avatarsRef = useRef([]);
   const navigate = useNavigate();
 
@@ -18,7 +19,7 @@ const Hero = () => {
   useEffect(() => {
     // Hide all hero elements initially
     if (leftTextRef.current && rightTextRef.current && paragraphRef.current && buttonRef.current) {
-      gsap.set([leftTextRef.current, rightTextRef.current, paragraphRef.current], {
+      gsap.set([leftTextRef.current, rightTextRef.current, paragraphRef.current, rightTextSmallRef.current], {
         opacity: 0,
         y: 120,
         clipPath: "inset(0 0 100% 0)",
@@ -36,7 +37,7 @@ const Hero = () => {
         const initialTl = gsap.timeline();
         
         // Set initial hidden state for hero elements - positioned below ground
-        gsap.set([leftTextRef.current, rightTextRef.current, paragraphRef.current], {
+        gsap.set([leftTextRef.current, rightTextRef.current, paragraphRef.current, rightTextSmallRef.current], {
           opacity: 0,
           y: 120,
           clipPath: "inset(0 0 100% 0)",
@@ -55,6 +56,13 @@ const Hero = () => {
           ease: "power3.out"
         })
         .to(rightTextRef.current, {
+          opacity: 1,
+          y: 0,
+          clipPath: "inset(0% 0 0% 0)",
+          duration: 1.2,
+          ease: "power3.out"
+        }, "-=0.8")
+        .to(rightTextSmallRef.current, {
           opacity: 1,
           y: 0,
           clipPath: "inset(0% 0 0% 0)",
@@ -114,6 +122,14 @@ const Hero = () => {
                   });
                 }
                 
+                if (rightTextSmallRef.current) {
+                  gsap.set(rightTextSmallRef.current, { 
+                    y: yOffset, 
+                    clipPath: `inset(${clipOffset}% 0 0% 0)`, 
+                    opacity: 1 - progress * 0.3 
+                  });
+                }
+                
                 if (paragraphRef.current) {
                   gsap.set(paragraphRef.current, { 
                     y: yOffset * 0.8, 
@@ -130,6 +146,9 @@ const Hero = () => {
               }
               if (rightTextRef.current) {
                 gsap.set(rightTextRef.current, { y: 100, clipPath: "inset(0% 0 100% 0)", opacity: 0.7 });
+              }
+              if (rightTextSmallRef.current) {
+                gsap.set(rightTextSmallRef.current, { y: 100, clipPath: "inset(0% 0 100% 0)", opacity: 0.7 });
               }
               if (paragraphRef.current) {
                 gsap.set(paragraphRef.current, { y: 80, clipPath: "inset(0% 0 100% 0)", opacity: 0.6 });
@@ -148,6 +167,15 @@ const Hero = () => {
               }
               if (rightTextRef.current) {
                 gsap.to(rightTextRef.current, { 
+                  y: 0, 
+                  clipPath: "inset(0% 0 0% 0)", 
+                  opacity: 1, 
+                  duration: 0.5, 
+                  ease: "power3.out" 
+                });
+              }
+              if (rightTextSmallRef.current) {
+                gsap.to(rightTextSmallRef.current, { 
                   y: 0, 
                   clipPath: "inset(0% 0 0% 0)", 
                   opacity: 1, 
@@ -188,6 +216,15 @@ const Hero = () => {
               }
               if (rightTextRef.current) {
                 gsap.to(rightTextRef.current, { 
+                  y: 0, 
+                  clipPath: "inset(0% 0 0% 0)", 
+                  opacity: 1, 
+                  duration: 0.5, 
+                  ease: "power3.out" 
+                });
+              }
+              if (rightTextSmallRef.current) {
+                gsap.to(rightTextSmallRef.current, { 
                   y: 0, 
                   clipPath: "inset(0% 0 0% 0)", 
                   opacity: 1, 
@@ -271,13 +308,13 @@ const Hero = () => {
             monetization.
           </p>
         </div>
-        <h1 ref={rightTextRef} className="hidden lg:text-8xl lg:block font-medium w-[80%] tracking-tighter">
+        <h1 ref={rightTextSmallRef} className="hidden lg:text-8xl lg:block font-medium w-[80%] tracking-tighter">
           Our Mission.
         </h1>
       </div>
 
               {/* Social proof + CTA */}
-        <div className="flex flex-col items-center mt-20">
+        <div className="flex flex-col items-center sm:mt-20 mt-8">
           <div className="flex -space-x-4 mb-2 relative">
             {/* Radial background gradients behind avatars */}
             {[

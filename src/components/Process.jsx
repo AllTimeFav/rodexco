@@ -52,7 +52,7 @@ const Process = () => {
         bg-[size:40px_40px] rounded-xl pointer-events-none opacity-40
       "></div>
 
-      <div className="flex flex-col items-center min-h-[15vh] md:min-h-[50vh] justify-center text-[clamp(4.5rem,9vw,7.5rem)] md:text-[clamp(3.5rem,9vw,7.5rem)] font-bold max-w-[90%] mx-auto leading-30 font-secondary relative z-10 ">
+      <div className="flex flex-col items-center min-h-[15vh] md:min-h-[50vh] justify-center text-[clamp(3.5rem,9vw,7.5rem)] md:text-[clamp(3.5rem,9vw,7.5rem)] font-bold max-w-[90%] mx-auto font-secondary relative z-10 ">
         <h1
           ref={(el) => (processHeadingRefs.current[0] = el)}
           className="self-start mt-4 mb-1 md:mt-0 md:mb-0"
@@ -61,7 +61,7 @@ const Process = () => {
         </h1>
         <h1
           ref={(el) => (processHeadingRefs.current[1] = el)}
-          className="self-end mt-1 md:mt-0"
+          className="self-end md:mt-0"
         >
           PROCESS
         </h1>

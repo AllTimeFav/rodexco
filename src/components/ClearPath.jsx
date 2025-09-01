@@ -137,6 +137,7 @@ const ClearPath = () => {
         </div>
 
         {/* Avatars positioned around the text */}
+        
         <img
           ref={(el) => (clearPathImagesRefs.current[0] = el)}
           src="https://randomuser.me/api/portraits/women/1.jpg"
@@ -144,13 +145,15 @@ const ClearPath = () => {
           className="absolute top-12 left-1/2 sm:-translate-x-[6rem] -translate-x-[3rem] sm:-translate-y-[2rem] translate-y-[1rem] sm:w-18 sm:h-18 w-12 h-12 rounded-full shadow-lg"
           style={{ zIndex: 4 }}
         />
+        {/* bottom left image */}
         <img
           ref={(el) => (clearPathImagesRefs.current[1] = el)}
           src="https://randomuser.me/api/portraits/men/2.jpg"
           alt="avatar"
-          className="absolute sm:bottom-25 bottom-30 lg:left-[30%] left-[26%] sm:w-20 sm:h-20 w-15 h-15 translate-y-[2rem] rounded-full shadow-lg"
+          className="absolute sm:bottom-25 bottom-10 lg:left-[30%] left-[15%] sm:left-[26%] sm:w-20 sm:h-20 w-15 h-15 translate-y-[2rem] rounded-full shadow-lg"
           style={{ zIndex: 4 }}
         />
+        {/* right image */}
         <img
           ref={(el) => (clearPathImagesRefs.current[2] = el)}
           src="https://randomuser.me/api/portraits/men/4.jpg"

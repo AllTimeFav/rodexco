@@ -63,7 +63,7 @@ export default function CardDeck3D() {
       />
 
       {/* deck */}
-      <div className="relative w-full max-w-7xl h-[500px] md:h-[520px] perspective-[1200px] md:perspective-[1400px] flex items-center justify-center">
+      <div className="relative w-full max-w-7xl h-[500px] sm:h-[520px] perspective-[1200px] md:perspective-[1400px] flex items-center justify-center">
         {DATA.map((c, i) => (
           <article
             key={i}
@@ -71,8 +71,8 @@ export default function CardDeck3D() {
             onClick={() => setActive(i)}
             className="
               card absolute cursor-pointer select-none
-              w-[380px] max-w-[60vw] h-[520px]
-              rounded-3xl bg-[#040708]
+              w-[380px] max-w-[60vw] sm:h-[520px] h-[380px]
+              sm:rounded-3xl rounded-lg bg-[#040708]
             "
           >
             {/* soft cyan rim/glow when active */}
@@ -86,14 +86,14 @@ export default function CardDeck3D() {
                  }}
             />
 
-            <div className="p-8 md:p-10 lg:p-12 flex flex-col h-full">
+            <div className="p-4 sm:p-8 md:p-10 lg:p-12 flex flex-col h-full">
               <div className={`${i === active ? 'opacity-100' : 'opacity-50'} items-center rounded-full border border-black text-[#74cec8] text-sm font-medium`}>
                 {c.tag}
               </div>
 
               <h3
                 className={`
-                  mt-6 font-light tracking-tight text-white
+                  mt-4 sm:mt-6 font-light tracking-tight text-white
                   leading-snug
                   text-[clamp(1.2rem,2vw,1.8rem)]
                 ${i === active ? 'opacity-100' : 'opacity-50'}`}
@@ -101,7 +101,7 @@ export default function CardDeck3D() {
                 {c.heading}
               </h3>
 
-              <p className={`mt-6 text-slate-300/90 text-[15px] leading-6 max-w-[54ch] ${i === active ? 'opacity-100' : 'opacity-50'}`}>
+              <p className={`mt-4 sm:mt-6 text-slate-300/90 text-[15px] leading-6 max-w-[54ch] ${i === active ? 'opacity-100' : 'opacity-50'}`}>
                 {c.sub}
               </p>
             </div>
