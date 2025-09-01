@@ -49,6 +49,8 @@ export default function CircularTimeline() {
   const descriptionsRef = useRef([])
   const dotsRef = useRef([])
   const centerModelRef = useRef(null)
+  const gradientBg1Ref = useRef(null)
+  const gradientBg2Ref = useRef(null)
 
   useEffect(() => {
     if (!containerRef.current || !circleRef.current) return
@@ -76,6 +78,12 @@ export default function CircularTimeline() {
       gsap.set(centerModelRef.current, { opacity: 0, scale: 0.3, rotationY: 180 })
     }
 
+    // Initialize gradient backgrounds
+    if (gradientBg1Ref.current && gradientBg2Ref.current) {
+      gsap.set(gradientBg1Ref.current, { rotation: 0, scale: 1.2 });
+      gsap.set(gradientBg2Ref.current, { rotation: 45, scale: 1.5 });
+    }
+
     // Set up ScrollTrigger animation
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -97,6 +105,20 @@ export default function CircularTimeline() {
               ease: "back.out(1.7)",
             })
           }
+
+          // Animate gradient backgrounds in
+          if (gradientBg1Ref.current && gradientBg2Ref.current) {
+            gsap.to(gradientBg1Ref.current, {
+              opacity: 0.6,
+              duration: 1.5,
+              ease: "power2.out"
+            });
+            gsap.to(gradientBg2Ref.current, {
+              opacity: 0.4,
+              duration: 1.5,
+              ease: "power2.out"
+            });
+          }
         },
         onUpdate: (self) => {
           const progress = self.progress
@@ -104,6 +126,20 @@ export default function CircularTimeline() {
           // Update circle stroke - simple linear progress
           const offset = circumference - (progress * circumference)
           circle.style.strokeDashoffset = offset.toString()
+
+          // Animate gradient backgrounds with scroll
+          if (gradientBg1Ref.current && gradientBg2Ref.current) {
+            gsap.to(gradientBg1Ref.current, {
+              rotation: progress * 180,
+              scale: 1.2 + progress * 0.3,
+              duration: 0.1
+            });
+            gsap.to(gradientBg2Ref.current, {
+              rotation: 45 + progress * -360,
+              scale: 1.5 - progress * 0.5,
+              duration: 0.1
+            });
+          }
 
           // Calculate which topic should be active based on progress
           const totalSteps = topics.length
@@ -181,6 +217,12 @@ export default function CircularTimeline() {
           if (centerModelRef.current) {
             gsap.set(centerModelRef.current, { opacity: 0, scale: 0.3, rotationY: 180 })
           }
+
+          // Reset gradient backgrounds
+          if (gradientBg1Ref.current && gradientBg2Ref.current) {
+            gsap.set(gradientBg1Ref.current, { opacity: 0, rotation: 0, scale: 1.2 });
+            gsap.set(gradientBg2Ref.current, { opacity: 0, rotation: 45, scale: 1.5 });
+          }
         },
         onEnterBack: () => {
           // Handle scrolling back up - ensure first topic is hidden
@@ -202,6 +244,12 @@ export default function CircularTimeline() {
           if (centerModelRef.current) {
             gsap.set(centerModelRef.current, { opacity: 0, scale: 0.3, rotationY: 180 })
           }
+
+          // Reset gradient backgrounds
+          if (gradientBg1Ref.current && gradientBg2Ref.current) {
+            gsap.set(gradientBg1Ref.current, { opacity: 0, rotation: 0, scale: 1.2 });
+            gsap.set(gradientBg2Ref.current, { opacity: 0, rotation: 45, scale: 1.5 });
+          }
         },
         onLeaveBack: () => {
           // Additional safety reset when scrolling back up beyond trigger
@@ -222,6 +270,12 @@ export default function CircularTimeline() {
           // Reset center model
           if (centerModelRef.current) {
             gsap.set(centerModelRef.current, { opacity: 0, scale: 0.3, rotationY: 180 })
+          }
+
+          // Reset gradient backgrounds
+          if (gradientBg1Ref.current && gradientBg2Ref.current) {
+            gsap.set(gradientBg1Ref.current, { opacity: 0, rotation: 0, scale: 1.2 });
+            gsap.set(gradientBg2Ref.current, { opacity: 0, rotation: 45, scale: 1.5 });
           }
         }
       },
@@ -264,6 +318,24 @@ export default function CircularTimeline() {
       </div>
 
       <div ref={containerRef} className="hidden md:block min-h-[300vh] relative">
+        {/* Gradient backgrounds that will move with scrolling */}
+        <div 
+          ref={gradientBg1Ref}
+          className="absolute inset-0 opacity-0 pointer-events-none"
+          style={{
+            background: "radial-gradient(circle at 30% 30%, rgba(94, 114, 235, 0.4) 0%, transparent 50%)",
+            transition: "opacity 0.5s ease",
+          }}
+        ></div>
+        <div 
+          ref={gradientBg2Ref}
+          className="absolute inset-0 opacity-0 pointer-events-none"
+          style={{
+            background: "radial-gradient(circle at 70% 70%, rgba(255, 107, 107, 0.3) 0%, transparent 50%)",
+            transition: "opacity 0.5s ease",
+          }}
+        ></div>
+
         {/* Sticky container for the circle */}
         <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
           <div className="relative w-full max-w-4xl mx-auto px-4">

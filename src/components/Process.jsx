@@ -10,7 +10,7 @@ const Process = () => {
   useEffect(() => {
     const setupScrollAnimations = () => {
       // Set initial hidden states
-      gsap.set(processHeadingRefs.current, { opacity: 0, y: 100, clipPath: "inset(100% 0 0 0)" });
+      gsap.set(processHeadingRefs.current, { opacity: 0, y: 100, clipPath: "inset(0 0 100% 0)" });
 
       // Process headings with ground emergence effect
       processHeadingRefs.current.forEach((ref, index) => {
@@ -19,14 +19,14 @@ const Process = () => {
             opacity: 1,
             y: 0,
             clipPath: "inset(0% 0 0% 0)",
-            duration: 1.2,
+            duration: 0.5,
             ease: "power3.out",
             scrollTrigger: {
               trigger: ref,
-              start: "top 97%",
-              end: "bottom 1%",
+              start: "top bottom",
+              end: "bottom top",
               toggleActions: "play none none reverse",
-              scrub: 1.5, // Much smoother scrolling
+              scrub: 0.5, // Much smoother scrolling
             },
           });
         }
@@ -52,7 +52,7 @@ const Process = () => {
         bg-[size:40px_40px] rounded-xl pointer-events-none opacity-40
       "></div>
 
-      <div className="flex flex-col items-center min-h-[15vh] md:min-h-[50vh] justify-center text-[clamp(4.5rem,9vw,7.5rem)] md:text-[clamp(3.5rem,9vw,7.5rem)] font-bold max-w-[90%] mx-auto leading-30 font-secondary relative z-10">
+      <div className="flex flex-col items-center min-h-[15vh] md:min-h-[50vh] justify-center text-[clamp(4.5rem,9vw,7.5rem)] md:text-[clamp(3.5rem,9vw,7.5rem)] font-bold max-w-[90%] mx-auto leading-30 font-secondary relative z-10 ">
         <h1
           ref={(el) => (processHeadingRefs.current[0] = el)}
           className="self-start mt-4 mb-1 md:mt-0 md:mb-0"

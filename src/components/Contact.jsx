@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react"
 import { gsap } from "gsap"
+import { useNavigate } from "react-router-dom"
 
 
 const questions = [
@@ -65,7 +66,7 @@ export default function ContactPage() {
   const questionRef = useRef(null)
   const inputRef = useRef(null)
   const progressRef = useRef(null)
-
+  const navigate = useNavigate()
   const currentQuestion = questions[currentStep]
 
   // Typing animation effect
@@ -203,6 +204,7 @@ export default function ContactPage() {
     console.log("Form submitted:", formData)
     // Handle form submission here
     alert("Thank you! Your message has been sent.")
+    navigate("/")
   }
 
   const handleKeyPress = (e) => {

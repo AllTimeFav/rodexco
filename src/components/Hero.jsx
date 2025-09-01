@@ -87,8 +87,8 @@ const Hero = () => {
         const heroScrollTl = gsap.timeline({
           scrollTrigger: {
             trigger: "body",
-            start: "top top",
-            end: "top 20%",
+            start: "top bottom",
+            end: "bottom top",
             scrub: 2.5, // Much smoother, slower scrolling
             onUpdate: (self) => {
               const progress = self.progress;
@@ -287,6 +287,7 @@ const Hero = () => {
             ].map((src, i) => (
               <div key={i} className="relative">
                 {/* Radial background for each avatar */}
+                
                 <div 
                   className="absolute inset-0 w-10 h-10 rounded-full opacity-30"
                   style={{ 
@@ -308,7 +309,7 @@ const Hero = () => {
           100+ Creators trust Rodexco
         </span>
         <div ref={buttonRef}>
-          <GlowButton onClick={() => navigate('/contact')}>Apply Now</GlowButton>
+          <GlowButton  className='cursor-pointer' onClick={() => navigate('/contact')}>Apply Now</GlowButton>
         </div>
       </div>
     </div>

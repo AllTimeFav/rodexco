@@ -66,7 +66,7 @@ const RoadmapCTA = () => {
 				</div>
 
 				<div className="mt-4">
-					<GlowButton>Apply Now</GlowButton>
+					<GlowButton className='cursor-pointer'>Apply Now</GlowButton>
 				</div>
 
 				{/* Dotted square centered below the button */}

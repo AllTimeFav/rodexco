@@ -15,8 +15,8 @@ const ClearPath = () => {
     const setupScrollAnimations = () => {
       // Set initial hidden states
       gsap.set(clearPathRefs.current, { opacity: 0, y: 100, clipPath: "inset(0 0 100% 0)" });
-      gsap.set(clearPathImagesRefs.current, { opacity: 0, scale: 0.8, y: 0 });
-      gsap.set(clearPathParagraphRef.current, { opacity: 0, y: 60, scale: 0.9, clipPath: "inset(0% 0 100% 0)" });
+      gsap.set(clearPathImagesRefs.current, { opacity: 0, scale: 0, y: 0 });
+      gsap.set(clearPathParagraphRef.current, { opacity: 0, y: 60, scale: 0.9 });
 
       // A CLEAR PATH headings with ground emergence effect
       clearPathRefs.current.forEach((ref, index) => {
@@ -29,10 +29,10 @@ const ClearPath = () => {
             ease: "power3.out",
             scrollTrigger: {
               trigger: ref,
-              start: "top 85%",
-              end: "bottom 15%",
+              start: "top bottom",
+              end: "bottom top",
               toggleActions: "play none none reverse",
-              scrub: 1.5, // Much smoother scrolling
+              scrub: 0.5,
             },
           });
         }
@@ -44,7 +44,6 @@ const ClearPath = () => {
         y: 0,
         scale: 1,
         duration: 0.8,
-        clipPath: "inset(0% 0 0% 0)",
         ease: "power2.out",
         scrollTrigger: {
           trigger: clearPathParagraphRef.current,
@@ -68,39 +67,39 @@ const ClearPath = () => {
           ease: "back.out(1.7)",
           scrollTrigger: {
             trigger: img,
-            start: "top 90%",
-            end: "bottom 10%",
-            toggleActions: "play none none reverse",
-            scrub: 1.2,
-          },
-        });
-
-        // Scroll-scrubbed floating movement
-        gsap.to(img, {
-          y: index % 2 === 0 ? "+=14" : "-=14",
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: img,
             start: "top bottom",
             end: "bottom top",
-            scrub: 1.2,
-          },
-        });
-
-        // Subtle pop-out as it exits upwards
-        gsap.to(img, {
-          scale: 0.92,
-          opacity: 0.85,
-          duration: 0.6,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: img,
-            start: "top 60%",
-            end: "top 30%",
             toggleActions: "play none none reverse",
             scrub: 1.2,
           },
         });
+
+        // // Scroll-scrubbed floating movement
+        // gsap.to(img, {
+        //   y: index % 2 === 0 ? "+=14" : "-=14",
+        //   ease: "power2.out",
+        //   scrollTrigger: {
+        //     trigger: img,
+        //     start: "top bottom",
+        //     end: "bottom top",
+        //     scrub: 1.2,
+        //   },
+        // });
+
+        // // Subtle pop-out as it exits upwards
+        // gsap.to(img, {
+        //   scale: 0.92,
+        //   opacity: 0.85,
+        //   duration: 0.6,
+        //   ease: "power2.out",
+        //   scrollTrigger: {
+        //     trigger: img,
+        //     start: "top 60%",
+        //     end: "top 30%",
+        //     toggleActions: "play none none reverse",
+        //     scrub: 1.2,
+        //   },
+        // });
       });
     };
 

@@ -100,7 +100,7 @@ function App() {
           <>
             <div className="relative bg-gradient-to-b from-[#050a0b] via-[#0b1b1f] to-[#040708] text-slate-200 font-primary">
               <InlinePrisma position={[0,0,0]} />
-              <div className="lg:max-w-[65%] md:max-w-[90%] mx-auto px-4 py-6">
+              <div className="2xl:max-w-[65%] md:max-w-[90%] mx-auto px-4 py-6">
                 <Header />
                 <Hero />
                 <ClearPath />

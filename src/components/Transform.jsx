@@ -66,8 +66,8 @@ const Transform = () => {
              ease: "back.out(1.7)",
              scrollTrigger: {
                trigger: img,
-               start: "top 90%",
-               end: "bottom 10%",
+               start: "top bottom",
+               end: "bottom top",
                toggleActions: "play none none reverse",
                scrub: 1.5, // Much smoother scrolling
              },
@@ -92,8 +92,8 @@ const Transform = () => {
              ease: "power2.out",
              scrollTrigger: {
                trigger: img,
-               start: "top 110%",
-               end: "top 90%",
+               start: "top bottom",
+               end: "bottom top",
                toggleActions: "play none none reverse",
                scrub: 1.5,
              },
@@ -108,8 +108,8 @@ const Transform = () => {
              ease: "power3.out",
              scrollTrigger: {
                trigger: img,
-               start: "top 90%",
-               end: "top 80%",
+               start: "top bottom",
+               end: "bottom top",
                toggleActions: "play none none reverse",
                scrub: 1.5,
              },
@@ -138,10 +138,10 @@ const Transform = () => {
           }}
         ></div>
         
-        <div className="leading-15 text-center mt-10 mb-10 relative z-10 px-4">
+        <div className="leading-15text-center mt-10 mb-10 relative z-10 px-4">
           <h1
             ref={(el) => (transformHeadingRefs.current[0] = el)}
-            className="text-[clamp(1.6rem,6vw,3.5rem)] mt-6"
+            className="text-[clamp(1.6rem,6vw,3.5rem)] tracking-tighter  mt-6"
           >
             Transform your passion into profit
           </h1>
@@ -149,9 +149,9 @@ const Transform = () => {
         
         <p
           ref={transformParagraphRef}
-          className="text-center mb-10 text-[clamp(1rem,2.2vw,1.15rem)] max-w-full md:max-w-[70%] lg:max-w-[55%] xl:max-w-[38%] font-light px-6"
+          className="text-center mb-10 text-[clamp(1rem,2.2vw,1.3rem)] max-w-full md:max-w-[70%] lg:max-w-[55%] xl:max-w-[38%] font-light px-6"
         >
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium sint accusantium obcaecati unde similique, magni suscipit rerum animi facere distinctio numquam quod? Facere assumenda eos nulla labore ab, non placeat.
+          Like so many of our creators, unlock the potential of your creativity with Rodexco support and guidance.
         </p>
         
         <div className="px-4">
@@ -162,7 +162,7 @@ const Transform = () => {
         <div className="flex -space-x-4 md:-space-x-6 -mb-10 relative z-10">
           <img
             ref={(el) => (transformImagesRefs.current[0] = el)}
-            src="https://randomuser.me/api/portraits/men/4.jpg"
+            src="https://randomuser.me/api/portraits/women/1.jpg"
             alt="Creator 1"
             className="w-18 h-18 md:w-27 md:h-27 rounded-full object-cover shadow-lg relative z-0"
           />
@@ -174,7 +174,7 @@ const Transform = () => {
           />
           <img
             ref={(el) => (transformImagesRefs.current[2] = el)}
-            src="https://randomuser.me/api/portraits/men/4.jpg"
+            src="https://randomuser.me/api/portraits/men/3.jpg"
             alt="Creator 3"
             className="w-18 h-18 md:w-27 md:h-27 rounded-full object-cover shadow-lg relative z-0"
           />
