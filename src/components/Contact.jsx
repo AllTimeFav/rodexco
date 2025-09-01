@@ -1,305 +1,313 @@
-import React, { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
-import GlowButton from "./GLowButton";
 
-const Contact = () => {
-  const [currentStep, setCurrentStep] = useState(0);
+import { useState, useEffect, useRef } from "react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react"
+import { gsap } from "gsap"
+
+
+const questions = [
+  {
+    id: "name",
+    question: "What's your name?",
+    placeholder: "Enter your full name...",
+    type: "text",
+  },
+  {
+    id: "email",
+    question: "What's your email address?",
+    placeholder: "Enter your email...",
+    type: "email",
+  },
+  {
+    id: "serviceType",
+    question: "What service are you interested in?",
+    placeholder: "Select a service",
+    type: "multiselect",
+    options: [
+      "Web Development",
+      "Mobile App Development",
+      "UI/UX Design",
+      "E-commerce Solutions",
+      "Digital Marketing",
+      "Consulting",
+    ],
+  },
+  {
+    id: "phone",
+    question: "What's your phone number?",
+    placeholder: "Enter your phone number...",
+    type: "tel",
+  },
+  {
+    id: "message",
+    question: "Tell us about your project",
+    placeholder: "Describe your project in detail...",
+    type: "textarea",
+  },
+]
+
+export default function ContactPage() {
+  const [currentStep, setCurrentStep] = useState(0)
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     serviceType: "",
     phone: "",
     message: "",
-  });
+  })
+  const [isTyping, setIsTyping] = useState(true)
+  const [displayedText, setDisplayedText] = useState("")
+  const [showOptions, setShowOptions] = useState(false)
 
-  const formRefs = useRef([]);
-  const navigate = useNavigate();
-  const [isTyping, setIsTyping] = useState(false);
-  const [typingText, setTypingText] = useState("");
-  const [currentLabel, setCurrentLabel] = useState("");
+  const questionRef = useRef(null)
+  const inputRef = useRef(null)
+  const progressRef = useRef(null)
 
-  const formSteps = [
-    {
-      field: "name",
-      label: "What's your name?",
-      type: "text",
-      placeholder: "Enter your full name",
-      required: true,
-    },
-    {
-      field: "email",
-      label: "What's your email?",
-      type: "email",
-      placeholder: "Enter your email address",
-      required: true,
-    },
-    {
-      field: "serviceType",
-      label: "What service do you need?",
-      type: "select",
-      options: [
-        "Web Development",
-        "Mobile App Development",
-        "UI/UX Design",
-        "Digital Marketing",
-        "Consulting",
-        "Other",
-      ],
-      required: true,
-    },
-    {
-      field: "phone",
-      label: "What's your phone number?",
-      type: "tel",
-      placeholder: "Enter your phone number",
-      required: false,
-    },
-    {
-      field: "message",
-      label: "Tell us about your project",
-      type: "textarea",
-      placeholder: "Describe your project, goals, and any specific requirements...",
-      required: true,
-    },
-  ];
+  const currentQuestion = questions[currentStep]
 
-  // Typing effect for labels
+  // Typing animation effect
   useEffect(() => {
-    if (currentStep < formSteps.length) {
-      const label = formSteps[currentStep].label;
-      setCurrentLabel(label);
-      setIsTyping(true);
-      setTypingText("");
-      
-      let index = 0;
-      const timer = setInterval(() => {
-        if (index < label.length) {
-          setTypingText(label.slice(0, index + 1));
-          index++;
-        } else {
-          setIsTyping(false);
-          clearInterval(timer);
-        }
-      }, 50);
-      
-      return () => clearInterval(timer);
-    }
-  }, [currentStep]);
+    setIsTyping(true)
+    setDisplayedText("")
 
-  // Keyboard navigation
-  useEffect(() => {
-    const handleKeyPress = (e) => {
-      if (e.key === "Enter" && !isTyping) {
-        if (currentStep < formSteps.length - 1) {
-          handleNext();
-        } else {
-          handleSubmit();
-        }
-      } else if (e.key === "Escape") {
-        navigate("/");
+    const text = currentQuestion.question
+    let index = 0
+
+    const typeInterval = setInterval(() => {
+      if (index < text.length) {
+        setDisplayedText(text.slice(0, index + 1))
+        index++
+      } else {
+        setIsTyping(false)
+        clearInterval(typeInterval)
       }
-    };
+    }, 50)
 
-    window.addEventListener("keydown", handleKeyPress);
-    return () => window.removeEventListener("keydown", handleKeyPress);
-  }, [currentStep, isTyping, navigate]);
+    return () => clearInterval(typeInterval)
+  }, [currentStep])
 
-  // Validation function
+  // GSAP animations
+  useEffect(() => {
+    if (questionRef.current && inputRef.current) {
+      gsap.fromTo(
+        questionRef.current,
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }
+      )
+
+      gsap.fromTo(
+        inputRef.current,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.6, delay: 0.3, ease: "power2.out" }
+      )
+    }
+  }, [currentStep])
+
+  // Progress bar animation
+  useEffect(() => {
+    if (progressRef.current) {
+      gsap.to(progressRef.current, {
+        width: `${((currentStep + 1) / questions.length) * 100}%`,
+        duration: 0.5,
+        ease: "power2.out",
+      })
+    }
+  }, [currentStep])
+
+  const toggleService = (service) => {
+    setFormData(prev => {
+      const currentServices = prev.serviceType
+      if (currentServices.includes(service)) {
+        return {
+          ...prev,
+          serviceType: currentServices.filter(s => s !== service)
+        }
+      } else {
+        return {
+          ...prev,
+          serviceType: [...currentServices, service]
+        }
+      }
+    })
+  }
+
   const validateField = (field, value) => {
     switch (field) {
       case "email":
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(value);
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
       case "name":
-        return value.trim().length >= 2;
-      case "serviceType":
-        return value.trim().length > 0;
-      case "message":
-        return value.trim().length >= 10;
       case "phone":
-        return value.trim().length === 0 || /^[\+]?[1-9][\d]{0,15}$/.test(value);
+      case "message":
+        return value.trim().length > 0
+      case "serviceType":
+        return value !== ""
       default:
-        return true;
+        return true
     }
-  };
+  }
 
   const handleNext = () => {
-    const currentField = formSteps[currentStep].field;
-    const currentValue = formData[currentField];
-    
-    if (validateField(currentField, currentValue)) {
-      if (currentStep < formSteps.length - 1) {
-        setCurrentStep(currentStep + 1);
+    const currentValue = formData[currentQuestion.id]
+
+    if (!validateField(currentQuestion.id, currentValue)) {
+      // Add shake animation for invalid input
+      if (inputRef.current) {
+        gsap.to(inputRef.current, {
+          x: [-10, 10, -10, 10, 0],
+          duration: 0.5,
+          ease: "power2.out",
+        })
+      }
+      return
+    }
+
+    if (currentStep < questions.length - 1) {
+      // Animate current content out
+      if (questionRef.current && inputRef.current) {
+        gsap.to([questionRef.current, inputRef.current], {
+          opacity: 0,
+          y: -30,
+          duration: 0.3,
+          ease: "power2.in",
+          onComplete: () => {
+            setCurrentStep(currentStep + 1)
+          },
+        })
       }
     } else {
-      // Show validation error (you can add a toast or error state here)
-      console.log(`Please fill in ${currentField} correctly`);
+      // Submit form
+      handleSubmit()
     }
-  };
+  }
 
-  const handlePrevious = () => {
+  const handleBack = () => {
     if (currentStep > 0) {
-      setCurrentStep(currentStep - 1);
+      if (questionRef.current && inputRef.current) {
+        gsap.to([questionRef.current, inputRef.current], {
+          opacity: 0,
+          y: 30,
+          duration: 0.3,
+          ease: "power2.in",
+          onComplete: () => {
+            setCurrentStep(currentStep - 1)
+          },
+        })
+      }
     }
-  };
-
-  const handleInputChange = (field, value) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
+  }
 
   const handleSubmit = () => {
-    console.log("Form submitted:", formData);
-  };
+    console.log("Form submitted:", formData)
+    // Handle form submission here
+    alert("Thank you! Your message has been sent.")
+  }
 
-  const renderField = (step, index) => {
-    const { field, label, type, placeholder, options, required } = step;
-    const isCurrentStep = index === currentStep;
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault()
+      handleNext()
+    }
+  }
 
-    if (!isCurrentStep) return null;
+  const updateFormData = (value) => {
+    setFormData((prev) => ({
+      ...prev,
+      [currentQuestion.id]: value,
+    }))
+  }
 
-    return (
-      <motion.div
-        key={field}
-        ref={(el) => (formRefs.current[index] = el)}
-        initial={{ y: 100, opacity: 0, scale: 0.8 }}
-        animate={{ y: 0, opacity: 1, scale: 1 }}
-        exit={{ y: -100, opacity: 0, scale: 0.9 }}
-        transition={{ 
-          type: "spring", 
-          stiffness: 100, 
-          damping: 20,
-          duration: 0.6 
-        }}
-        className="w-full max-w-md"
-      >
-        <div className="text-center mb-8">
-          <motion.h2 
-            className="text-4xl font-medium text-white mb-4 tracking-tight"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-          >
-            {typingText}
-            {isTyping && (
-              <motion.span
-                animate={{ opacity: [1, 0] }}
-                transition={{ duration: 0.8, repeat: Infinity }}
-                className="ml-1"
-              >
-                |
-              </motion.span>
-            )}
-          </motion.h2>
-          <motion.div 
-            className="w-24 h-1 bg-gradient-to-r from-[#74cec8] to-[#4ade80] mx-auto rounded-full"
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-          />
-        </div>
+  const renderInput = () => {
+    const currentValue = formData[currentQuestion.id]
 
-        <motion.div 
-          className="space-y-6"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.5 }}
-        >
-          {type === "select" ? (
-            <motion.select
-              value={formData[field]}
-              onChange={(e) => handleInputChange(field, e.target.value)}
-              className="w-full px-6 py-4 bg-slate-800/50 border border-slate-600 rounded-xl text-white text-lg placeholder-slate-400 focus:outline-none focus:border-[#74cec8] focus:ring-2 focus:ring-[#74cec8]/20 transition-all duration-300"
-              required={required}
-              whileFocus={{ scale: 1.02 }}
-              whileHover={{ scale: 1.01 }}
+    switch (currentQuestion.type) {
+      case "multiselect":
+        return (
+          <div className="w-full max-w-2xl">
+            {/* Instructions text */}
+            <div className="text-slate-300 text-lg mb-4">
+              <p>Select all that apply.</p>
+              <p className="text-slate-400 text-sm mt-1">Choose as many as you like</p>
+            </div>
+
+            {/* Options dropdown - always visible for this design */}
+            <div
+              className="bg-transparent space-y-2"
             >
-              <option value="">Select a service</option>
-              {options.map((option, idx) => (
-                <option key={idx} value={option}>
+              {currentQuestion.options?.map((option, index) => {
+                const optionLetter = String.fromCharCode(65 + index); // A, B, C, etc.
+                const isSelected = formData.serviceType.includes(option);
+
+                return (
+                  <div
+                    key={option}
+                    className={`px-4 py-3 text-lg cursor-pointer flex items-center justify-between border-b border-slate-600 hover:border-[#7bdbd4] transition-colors ${isSelected ? "text-[#7bdbd4]" : "text-white"
+                      }`}
+                    onClick={() => toggleService(option)}
+                  >
+                    <div className="flex items-center">
+                      <span className="font-medium mr-3 w-6 text-center">
+                        {optionLetter}.
+                      </span>
+                      {option}
+                    </div>
+                    {isSelected && (
+                      <CheckCircle2 className="w-5 h-5 text-[#7bdbd4]" />
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        )
+      case "select":
+        return (
+          <Select value={currentValue} onValueChange={updateFormData}>
+            <SelectTrigger className="w-full max-w-2xl h-16 text-4xl md:text-2xl bg-transparent border-0 border-b-2 border-[#7bdbd4] text-[#7bdbd4] placeholder-slate-400 focus:border-[#7bdbd4] focus:ring-0 focus:outline-none px-0 rounded-none">
+              <SelectValue placeholder={currentQuestion.placeholder} />
+            </SelectTrigger>
+            <SelectContent className="bg-slate-800 border border-slate-600 text-white text-lg">
+              {currentQuestion.options?.map((option) => (
+                <SelectItem key={option} value={option} className="text-lg py-3 focus:bg-slate-700">
                   {option}
-                </option>
+                </SelectItem>
               ))}
-            </motion.select>
-          ) : type === "textarea" ? (
-            <motion.textarea
-              value={formData[field]}
-              onChange={(e) => handleInputChange(field, e.target.value)}
-              placeholder={placeholder}
-              rows={6}
-              className="w-full px-6 py-4 bg-slate-800/50 border border-slate-600 rounded-xl text-white text-lg placeholder-slate-400 focus:outline-none focus:border-[#74cec8] focus:ring-2 focus:ring-[#74cec8]/20 transition-all duration-300 resize-none"
-              required={required}
-              whileFocus={{ scale: 1.02 }}
-              whileHover={{ scale: 1.01 }}
-            />
-          ) : (
-            <motion.input
-              type={type}
-              value={formData[field]}
-              onChange={(e) => handleInputChange(field, e.target.value)}
-              placeholder={placeholder}
-              className="w-full px-6 py-4 bg-slate-800/50 border border-slate-600 rounded-xl text-white text-lg placeholder-slate-400 focus:outline-none focus:border-[#74cec8] focus:ring-2 focus:ring-[#74cec8]/20 transition-all duration-300"
-              required={required}
-              whileFocus={{ scale: 1.02 }}
-              whileHover={{ scale: 1.01 }}
-            />
-          )}
+            </SelectContent>
+          </Select>
+        )
 
-          <motion.div 
-            className="flex justify-between items-center pt-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, duration: 0.5 }}
-          >
-            {currentStep > 0 && (
-              <motion.button
-                onClick={handlePrevious}
-                className="px-6 py-3 text-slate-300 hover:text-white transition-colors duration-300"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                ← Back
-              </motion.button>
-            )}
+      case "textarea":
+        return (
+          <Textarea
+            value={currentValue}
+            onChange={(e) => updateFormData(e.target.value)}
+            placeholder={currentQuestion.placeholder}
+            onKeyDown={handleKeyPress}
+            className="w-full max-w-2xl ml-2 text-4xl md:text-2xl bg-transparent border-0 border-b-2 border-[#7bdbd4] text-[#7bdbd4] placeholder-slate-400 focus:ring-0 focus:outline-none px-0 resize-none rounded-none"
+            autoFocus={!isTyping}
+          />
+        )
 
-            {currentStep < formSteps.length - 1 ? (
-              <GlowButton onClick={handleNext}>Next</GlowButton>
-            ) : (
-              <GlowButton onClick={handleSubmit}>Send Message</GlowButton>
-            )}
-          </motion.div>
-        </motion.div>
-
-        <motion.div 
-          className="mt-8 flex justify-center space-x-2"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.0, duration: 0.5 }}
-        >
-          {formSteps.map((_, idx) => (
-            <motion.div
-              key={idx}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                idx === currentStep
-                  ? "bg-[#74cec8] scale-125"
-                  : idx < currentStep
-                  ? "bg-[#4ade80]"
-                  : "bg-slate-600"
-              }`}
-              whileHover={{ scale: 1.2 }}
-              transition={{ delay: idx * 0.1 }}
-            />
-          ))}
-        </motion.div>
-      </motion.div>
-    );
-  };
+      default:
+        return (
+          <Input
+            type={currentQuestion.type}
+            value={currentValue}
+            onChange={(e) => updateFormData(e.target.value)}
+            placeholder={currentQuestion.placeholder}
+            onKeyDown={handleKeyPress}
+            className="w-full max-w-2xl h-16 font-light text-xl md:text-4xl bg-transparent border-0 border-b-2 border-[#7bdbd4] text-[#7bdbd4] placeholder-[#7bdbd4] px-0 rounded-none ml-2"
+            autoFocus={!isTyping}
+          />
+        )
+    }
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#050a0b] via-[#0b1b1f] to-[#040708] relative overflow-hidden">
+      {/* Animated background gradient */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -309,76 +317,69 @@ const Contact = () => {
         }}
       ></div>
 
-
-      <div className="relative z-20 pt-6 pb-4">
-        <div className="max-w-4xl mx-auto px-4">
-          <button
-            onClick={() => navigate("/")}
-            className="text-slate-300 hover:text-white transition-colors duration-300 flex items-center space-x-2"
-          >
-            <span>←</span>
-            <span>Back to Home</span>
-          </button>
-        </div>
+      {/* Progress Bar */}
+      <div className="w-full h-1 bg-slate-700 relative z-20">
+        <div
+          ref={progressRef}
+          className="h-full bg-gradient-to-r from-[#74cec8] to-[#7bdbd4] transition-all duration-500"
+          style={{ width: "0%" }}
+        />
       </div>
 
-      <div className="relative z-10 pt-4 pb-4">
-        <div className="max-w-4xl mx-auto px-4">
-          <h1 className="text-5xl font-medium text-white text-center tracking-tight">
-            Let's Build Something Amazing
-          </h1>
-          <p className="text-slate-300 text-center mt-4 text-lg">
-            Tell us about your project and we'll get back to you within 24 hours
-          </p>
-        </div>
-      </div>
+      {/* Step Indicator */}
+      {/* <div className="flex justify-center pt-8 pb-4 relative z-20">
+        <span className="text-sm text-slate-300">
+          Step {currentStep + 1} of {questions.length}
+        </span>
+      </div> */}
 
-      {/* Progress Indicator */}
-      <motion.div 
-        className="relative z-10 pt-4 pb-8"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3, duration: 0.5 }}
-      >
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="text-center">
-            <p className="text-slate-300 text-lg mb-2">
-              Step {currentStep + 1} of {formSteps.length}
-            </p>
-            <div className="w-full bg-slate-700 rounded-full h-2">
-              <motion.div
-                className="bg-gradient-to-r from-[#74cec8] to-[#4ade80] h-2 rounded-full"
-                initial={{ width: 0 }}
-                animate={{ width: `${((currentStep + 1) / formSteps.length) * 100}%` }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-              />
+      {/* Main Content */}
+      <div className="flex-1 flex min-h-[90vh] flex-col items-center justify-center px-6 pb-20 relative z-10 font-primary">
+        <div className="w-full max-w-2xl space-y-8">
+          {/* Question with number */}
+          <div ref={questionRef} className="flex items-start space-x-3">
+            <div className="flex items-center pt-1">
+              <span className="text-lg md:text-xl flex items-center space-x-2 text-[#7bdbd4]">
+                {currentStep + 1} <ArrowRight className="w-5 h-5" />
+              </span>
+            </div>
+            <div className="flex-1 space-y-2 text-left">
+              <h2 className="text-xl md:text-2xl text-white text-balance">
+                {displayedText}
+                {isTyping && <span className="animate-pulse">|</span>}
+              </h2>
             </div>
           </div>
-        </div>
-      </motion.div>
 
-      {/* Form Container */}
-      <div className="relative z-10 flex-1 flex items-center justify-center min-h-[50vh] px-4">
-        <AnimatePresence mode="wait">
-          {renderField(formSteps[currentStep], currentStep)}
-        </AnimatePresence>
+          {/* Input Field - aligned with question text, not the number */}
+          <div ref={inputRef} className="flex justify-end">
+            <div className="w-full max-w-2xl ml-10"> {/* Offset to align with question text */}
+              {renderInput()}
+            </div>
+          </div>
+
+          {/* Navigation Buttons */}
+          <div className="flex justify-between items-center pt-8 ml-6">
+            <Button
+              variant="ghost"
+              onClick={handleBack}
+              disabled={currentStep === 0}
+              className="flex items-center gap-2 text-slate-300 disabled:opacity-30 cursor-pointer"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back
+            </Button>
+
+            <Button
+              onClick={handleNext}
+              className="flex items-center gap-2 px-8 py-3 text-lg font-medium bg-[#7bdbd4] text-black cursor-pointer"
+            >
+              {currentStep === questions.length - 1 ? "Submit" : "Next"}
+              <ArrowRight className="w-4 h-4" />
+            </Button>
+          </div>
+        </div>
       </div>
-
-      {/* Keyboard Shortcuts Hint */}
-      <motion.div 
-        className="relative z-10 pb-8"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5, duration: 0.5 }}
-      >
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <p className="text-slate-400 text-sm">
-            💡 Press <kbd className="px-2 py-1 bg-slate-700 rounded text-xs">Enter</kbd> to continue, <kbd className="px-2 py-1 bg-slate-700 rounded text-xs">Esc</kbd> to go back
-          </p>
-        </div>
-      </motion.div>
     </div>
-  );
-};
-
-export default Contact;
+  )
+}
