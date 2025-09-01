@@ -194,9 +194,9 @@ const ClearPath = () => {
       <div className="w-full flex justify-center mt-10">
         <p
           ref={clearPathParagraphRef}
-          className="text-slate-200 text-center text-[clamp(2.5rem,6vw,4rem)] leading-16"
+          className="text-slate-200 text-center text-[clamp(1.5rem,6vw,4rem)]"
         >
-          Influint empowers creators to navigate, innovate, and lead in the creator economy.
+          Rodexco empowers creators to navigate, innovate, and lead in the creator economy.
         </p>
       </div>
 

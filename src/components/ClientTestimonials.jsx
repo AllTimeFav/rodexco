@@ -14,25 +14,25 @@ const ClientTestimonials = () => {
   const testimonials = [
     {
       name: "Sarah Johnson",
-      quote: "Influint changed my entire workflow for the better. Seriously, my opportunities have quadrupled and my stress is a fraction of what it was. I feel taken care of, and that means SO much.",
+      quote: "Rodexco changed my entire workflow for the better. Seriously, my opportunities have quadrupled and my stress is a fraction of what it was. I feel taken care of, and that means SO much.",
       avatar: "https://randomuser.me/api/portraits/women/1.jpg",
-      image: "https://randomuser.me/api/portraits/women/2.jpg",
+      image: "https://randomuser.me/api/portraits/women/1.jpg",
       color: "#F97316",
       duration: 0.9
     },
     {
       name: "Alex Chen",
-      quote: "The platform is incredibly intuitive and the results speak for themselves. My revenue has increased by 300% since I started using Influint. It's like having a personal growth coach.",
+      quote: "The platform is incredibly intuitive and the results speak for themselves. My revenue has increased by 300% since I started using Rodexco. It's like having a personal growth coach.",
       avatar: "https://randomuser.me/api/portraits/men/3.jpg",
-      image: "https://randomuser.me/api/portraits/men/4.jpg",
+      image: "https://randomuser.me/api/portraits/men/3.jpg",
       color: "#8B5CF6",
       duration: 0.8
     },
     {
-      name: "Maria Rodriguez",
-      quote: "I was skeptical at first, but Influint has completely transformed how I approach content creation. The community support and tools are game-changing. Highly recommend!",
+      name: "Mars Rodriguez",
+      quote: "I was skeptical at first, but Rodexco has completely transformed how I approach content creation. The community support and tools are game-changing. Highly recommend!",
       avatar: "https://randomuser.me/api/portraits/women/5.jpg",
-      image: "https://randomuser.me/api/portraits/women/6.jpg",
+      image: "https://randomuser.me/api/portraits/women/5.jpg",
       color: "#22C55E",
       duration: 1.0
     }

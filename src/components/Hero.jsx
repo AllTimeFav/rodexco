@@ -142,7 +142,7 @@ const Hero = () => {
                   y: 0, 
                   clipPath: "inset(0% 0 0% 0)", 
                   opacity: 1, 
-                  duration: 1.2, 
+                  duration: 0.5, 
                   ease: "power3.out" 
                 });
               }
@@ -151,7 +151,7 @@ const Hero = () => {
                   y: 0, 
                   clipPath: "inset(0% 0 0% 0)", 
                   opacity: 1, 
-                  duration: 1.2, 
+                  duration: 0.5, 
                   ease: "power3.out" 
                 });
               }
@@ -160,7 +160,7 @@ const Hero = () => {
                   y: 0, 
                   clipPath: "inset(0% 0 0% 0)", 
                   opacity: 1, 
-                  duration: 1.2, 
+                  duration: 0.5, 
                   ease: "power3.out" 
                 });
               }
@@ -182,7 +182,7 @@ const Hero = () => {
                   y: 0, 
                   clipPath: "inset(0% 0 0% 0)", 
                   opacity: 1, 
-                  duration: 1.5, 
+                  duration: 0.5, 
                   ease: "power3.out" 
                 });
               }
@@ -191,7 +191,7 @@ const Hero = () => {
                   y: 0, 
                   clipPath: "inset(0% 0 0% 0)", 
                   opacity: 1, 
-                  duration: 1.5, 
+                  duration: 0.5, 
                   ease: "power3.out" 
                 });
               }
@@ -200,7 +200,7 @@ const Hero = () => {
                   y: 0, 
                   clipPath: "inset(0% 0 0% 0)", 
                   opacity: 1, 
-                  duration: 1.5, 
+                  duration: 0.5, 
                   ease: "power3.out" 
                 });
               }
@@ -256,6 +256,7 @@ const Hero = () => {
               Your Vision.
             </h1>
             <h1
+              ref={rightTextRef}
               className="lg:text-8xl lg:hidden text-6xl whitespace-nowrap text-left md:text-8xl sm:self-end font-medium text-white tracking-tighter"
             >
               Our Mission.

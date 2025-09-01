@@ -337,7 +337,7 @@ export default function CircularTimeline() {
         ></div>
 
         {/* Sticky container for the circle */}
-        <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
+        <div className="sticky top-0 h-screen flex items-center justify-center">
           <div className="relative w-full max-w-4xl mx-auto px-4">
             {/* SVG Circle */}
             <div className="flex justify-center">

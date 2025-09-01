@@ -3,19 +3,19 @@ import GlowButton from "./GLowButton";
 
 const faqs = [
   {
-    q: "How does Influint work?",
-    a: "Influint partners with creators to align brand opportunities, growth strategy, and monetization. We handle outreach, negotiation, and long-term partnership development so you can stay focused on creating.",
+    q: "How does Rodexco work?",
+    a: "Rodexco partners with creators to align brand opportunities, growth strategy, and monetization. We handle outreach, negotiation, and long-term partnership development so you can stay focused on creating.",
   },
   {
     q: "What kinds of creators do you typically represent?",
     a: "We work with video-first creators across YouTube, TikTok, Twitch, and Shorts/Reels who have strong audience trust and consistent content output.",
   },
   {
-    q: "What makes Influint different?",
+    q: "What makes Rodexco different?",
     a: "We focus on sustainable, long-term value. Beyond one-off brand deals, we help creators build repeatable revenue, product lines, and scalable systems.",
   },
   {
-    q: "What is Influint Ventures?",
+    q: "What is Rodexco Ventures?",
     a: "A co-building arm where we incubate products with creators, combining your audience insight with our product, GTM, and operational expertise.",
   },
   {
@@ -74,7 +74,7 @@ const Questions = () => {
         <div className="absolute left-[25%] top-[28%] h-40 w-40 rounded-full bg-cyan-400/10 blur-3xl" />
       </div>
 
-      <div className="lg:max-w-[65%] md:max-w-[90%] mx-auto px-4">
+      <div className="2xl:max-w-[65%] max-w-[90%] mx-auto px-4">
         <div className="relative mb-20">
           {/* Radial glow behind heading */}
           <div className="pointer-events-none absolute z-0" aria-hidden
