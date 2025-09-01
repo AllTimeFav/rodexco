@@ -82,7 +82,7 @@ const Header = () => {
   return (
     <div
       ref={headerRef}
-      className="flex justify-between items-center py-4 px-6 bg-transparent z-50"
+      className="flex justify-between items-center "
     >
       <h1
         ref={titleRef}
