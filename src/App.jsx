@@ -30,9 +30,6 @@ function App() {
          scroll-behavior: auto;
          overflow-x: hidden;
          -webkit-overflow-scrolling: touch;
-         /* Custom scrollbar for model-driven experience */
-         scrollbar-width: thin;
-         scrollbar-color: rgba(116, 206, 200, 0.3) transparent;
        }
        
        /* Enhanced smooth scrolling for all elements */
@@ -40,29 +37,6 @@ function App() {
          scroll-behavior: auto;
        }
        
-       /* Custom scrollbar for webkit browsers */
-       ::-webkit-scrollbar {
-         width: 8px;
-       }
-       
-       ::-webkit-scrollbar-track {
-         background: transparent;
-       }
-       
-       ::-webkit-scrollbar-thumb {
-         background: rgba(116, 206, 200, 0.3);
-         border-radius: 4px;
-         transition: background 0.3s ease;
-       }
-       
-       ::-webkit-scrollbar-thumb:hover {
-         background: rgba(116, 206, 200, 0.6);
-       }
-       
-       /* Disable default scroll behavior for model-driven experience */
-       html, body {
-         scroll-behavior: auto !important;
-       }
      `;
     document.head.appendChild(style);
 

@@ -1,74 +1,24 @@
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Environment, useGLTF, ScrollControls, useScroll } from "@react-three/drei";
+import { Environment, useGLTF } from "@react-three/drei";
 import { Suspense, useRef, useEffect, useState } from "react";
-import { MeshStandardMaterial } from "three";
-
-// ===== MODEL CONTROL PARAMETERS =====
-// Adjust these values to control the entire experience
 
 const MODEL_CONTROLS = {
-  // Base model properties
-  baseScale: 3.8,           // Starting size of the model
-  basePosition: [0, 0, 0],  // Starting position [x, y, z] - centered and visible
-
-  // Rotation speeds for each phase
-  rotationSpeeds: {
-    phase0: Math.PI * 0.6,  // Hero section - very slow
-    phase1: Math.PI * 0.3,  // Middle section - medium
-    phase2: Math.PI * 0.8   // End section - fast
-  },
-
-  // Scaling behavior for each phase
-  scaling: {
-    phase0: { start: 1.5, end: 2.0, range: 0.5 },
-    phase1: { start: 2.0, end: 3.5, range: 1.5 },
-    phase2: { start: 3.5, end: 5.5, range: 2.0 }
-  },
-
-  // Movement ranges for each phase
-  movement: {
-    phase0: { y: 2, x: 0, z: 0 },
-    phase1: { y: 4, x: 1.5, z: 0 },
-    phase2: { y: 6, x: 2.5, z: 0 }
-  },
-
-  // Scroll phase boundaries (0.0 to 1.0)
-  phaseBoundaries: {
-    phase1Start: 0.33,  // When phase 1 begins
-    phase2Start: 0.66   // When phase 2 begins
-  },
-
-  // Animation intensity multipliers
-  intensity: {
-    horizontalMovement: 1.0,    // How much horizontal movement
-    verticalMovement: 1.0,      // How much vertical movement
-    rotationIntensity: 1.0,     // How intense rotations are
-    scaleIntensity: 1.0         // How dramatic scaling is
-  },
-
-  // Scroll behavior controls
-  scroll: {
-    pages: 3,                   // Number of scroll pages
-    damping: 0.25,              // Scroll damping (0.25 = smooth, responsive)
-    distance: 1.0,              // Scroll distance multiplier
-    enabled: true,              // Enable/disable scroll controls
-    infinite: false             // Infinite scrolling
-  }
+  baseScale: 3.8,
+  basePosition: [0, 0, 0],
 };
 
-function ScrollAnimatedModel({ position = [0, 0, 0], landingPhase = 0 }) {
+function ScrollAnimatedModel({ landingPhase = 0 }) {
   const { scene } = useGLTF("/models/prisma.glb");
   const modelRef = useRef();
-  const scroll = useScroll();
+  const shineRef = useRef({ intensity: 0 });
 
   useEffect(() => {
     if (scene) {
       scene.traverse((child) => {
         if (child.isMesh && child.material) {
-          // Keep original material but tweak for shine
-          child.material.metalness = 0.9;        // Makes it reflective
-          child.material.roughness = 0.15;       // Lower = shinier
-          child.material.envMapIntensity = 1.5;  // Boost reflection
+          child.material.metalness = 0.9;
+          child.material.roughness = 0.15;
+          child.material.envMapIntensity = 1.5;
           child.material.emissive = child.material.emissive || { r: 1, g: 1, b: 1 };
           child.material.emissiveIntensity = 0.15;
         }
@@ -76,47 +26,59 @@ function ScrollAnimatedModel({ position = [0, 0, 0], landingPhase = 0 }) {
     }
   }, [scene]);
 
-  const shineRef = useRef({ intensity: 0 });
-
   useFrame((state, delta) => {
-    if (modelRef.current && landingPhase >= 1) {
-      // Scroll-based rotation
-      const scrollOffset = scroll.offset;
-      const baseRotationSpeed = Math.PI * 0.3;
-      const rotationSpeed = baseRotationSpeed * (1 + scrollOffset * 2);
-      modelRef.current.rotation.y += rotationSpeed * delta;
+  if (modelRef.current && landingPhase >= 1) {
+    const scrollY = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight;
+    const viewportHeight = window.innerHeight;
 
-      // Landing animation
-      if (landingPhase === 1) {
-        const entranceProgress = Math.min((state.clock.elapsedTime - 0.5) / 2, 1);
-        const ease = 1 - Math.pow(1 - entranceProgress, 3);
+    // Calculate scroll progress (0 → 1)
+    const totalScrollable = docHeight - viewportHeight;
+    const scrollProgress = scrollY / totalScrollable;
 
-        const startY = MODEL_CONTROLS.basePosition[1] + 5;
-        const targetY = MODEL_CONTROLS.basePosition[1];
-        modelRef.current.position.y = startY + (targetY - startY) * ease;
+    // ✅ Model stays centered until 90% scroll
+    const baseY = MODEL_CONTROLS.basePosition[1];
+    const maxMoveUp = 6; // Move up by 6 units
+    let moveY = 0;
 
-        const scale = MODEL_CONTROLS.baseScale * ease;
-        modelRef.current.scale.setScalar(scale);
-      } else if (landingPhase >= 2) {
-        const floatOffset = Math.sin(state.clock.elapsedTime * 1.5) * 0.2;
-        // modelRef.current.position.y = MODEL_CONTROLS.basePosition[1] + floatOffset;
-        // modelRef.current.scale.setScalar(MODEL_CONTROLS.baseScale);
-      }
-
-      // Dynamic shine effect (pulsating highlight)
-      shineRef.current.intensity = (Math.sin(state.clock.elapsedTime * 2) + 1) / 2; // 0 to 1
-      modelRef.current.traverse((child) => {
-        if (child.isMesh && child.material) {
-          child.material.emissiveIntensity = 0.15 + shineRef.current.intensity * 0.3;
-        }
-      });
-
-      modelRef.current.position.x = MODEL_CONTROLS.basePosition[0];
-      modelRef.current.position.z = MODEL_CONTROLS.basePosition[2];
+    if (scrollProgress > 0.9) {
+      // Normalize progress from 90% → 100%
+      const progressAfter90 = (scrollProgress - 0.9) / 0.1;
+      moveY = progressAfter90 * maxMoveUp;
     }
-  });
 
-  // Clean up
+    modelRef.current.position.y = baseY + moveY;
+
+    // ✅ Rotation speed based on overall scroll progress
+    const baseRotationSpeed = Math.PI * 0.3;
+    const rotationSpeed = baseRotationSpeed * (1 + scrollProgress * 1.5);
+    modelRef.current.rotation.y += rotationSpeed * delta;
+
+    // ✅ Landing animation
+    if (landingPhase === 1) {
+      const entranceProgress = Math.min((state.clock.elapsedTime - 0.5) / 2, 1);
+      const ease = 1 - Math.pow(1 - entranceProgress, 3);
+      const startY = MODEL_CONTROLS.basePosition[1] + 5;
+      const targetY = MODEL_CONTROLS.basePosition[1];
+      modelRef.current.position.y = startY + (targetY - startY) * ease;
+      const scale = MODEL_CONTROLS.baseScale * ease;
+      modelRef.current.scale.setScalar(scale);
+    }
+
+    // ✅ Dynamic shine
+    shineRef.current.intensity = (Math.sin(state.clock.elapsedTime * 2) + 1) / 2;
+    modelRef.current.traverse((child) => {
+      if (child.isMesh && child.material) {
+        child.material.emissiveIntensity = 0.15 + shineRef.current.intensity * 0.3;
+      }
+    });
+
+    modelRef.current.position.x = MODEL_CONTROLS.basePosition[0];
+    modelRef.current.position.z = MODEL_CONTROLS.basePosition[2];
+  }
+});
+
+  // Cleanup
   useEffect(() => {
     return () => {
       scene.traverse((child) => {
@@ -134,28 +96,25 @@ function ScrollAnimatedModel({ position = [0, 0, 0], landingPhase = 0 }) {
 
   if (landingPhase === 0) return null;
 
-  return <primitive ref={modelRef} object={scene} scale={0} position={MODEL_CONTROLS.basePosition} />;
+  return (
+    <primitive ref={modelRef} object={scene} scale={0} position={MODEL_CONTROLS.basePosition} />
+  );
 }
 
-export default function InlinePrisma({ position = [0, 0, 0] }) {
-  const [landingPhase, setLandingPhase] = useState(0); // 0: hidden, 1: appearing, 2: landed
+export default function InlinePrisma() {
+  const [landingPhase, setLandingPhase] = useState(0);
 
   useEffect(() => {
-    // Landing animation sequence
     const landingSequence = async () => {
-      // Phase 1: Model starts hidden, then appears with fade-in
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
       setLandingPhase(1);
 
-      // Phase 2: Model fully visible, wait for landing completion
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       setLandingPhase(2);
 
-      // Phase 3: After model is landed, trigger hero section animations
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      // Dispatch custom event to trigger hero animations
-      const event = new CustomEvent('heroReady', { detail: { ready: true } });
+      const event = new CustomEvent("heroReady", { detail: { ready: true } });
       document.dispatchEvent(event);
     };
 
@@ -179,29 +138,13 @@ export default function InlinePrisma({ position = [0, 0, 0] }) {
         }}
       >
         <ambientLight intensity={0.55} />
-        <directionalLight intensity={1.4} position={[10, 10, 10]} color='#7bdbd4' />
-        <directionalLight intensity={1.8} position={[-10, -10, -10]} color='#7bdbd4' />
+        <directionalLight intensity={1.4} position={[10, 10, 10]} color="#7bdbd4" />
+        <directionalLight intensity={1.8} position={[-10, -10, -10]} color="#7bdbd4" />
         <Suspense fallback={null}>
-          {/* ScrollControls with improved scrolling */}
-          <ScrollControls
-            pages={3}
-            damping={0.25}
-            distance={1.0}
-            enabled={true}
-            infinite={false}
-            maxSpeed={0.5}
-            minDistance={0.1}
-            style={{ display: 'none' }} 
-          >
-            <ScrollAnimatedModel
-              position={position}
-              landingPhase={landingPhase}
-            />
-          </ScrollControls>
+          <ScrollAnimatedModel landingPhase={landingPhase} />
           <Environment preset="studio" />
         </Suspense>
       </Canvas>
-
     </div>
   );
 }

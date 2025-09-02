@@ -69,7 +69,7 @@ const Questions = () => {
   const [openIndex, setOpenIndex] = useState(null);
 
   return (
-    <section className="relative py-24 md:py-28 backdrop-blur-sm">
+    <section id="faqs" className="relative py-24 md:py-28 backdrop-blur-sm">
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute left-[12%] top-[20%] h-64 w-64 rounded-full bg-cyan-300/10 blur-3xl" />
         <div className="absolute left-[25%] top-[28%] h-40 w-40 rounded-full bg-cyan-400/10 blur-3xl" />

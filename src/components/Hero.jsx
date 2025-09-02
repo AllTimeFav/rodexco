@@ -263,7 +263,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <div className="lg:mt-30 mt-10 flex flex-col min-h-[80vh] justify-center relative">
+    <div id='hero' className="lg:mt-30 mt-10 flex flex-col min-h-[80vh] justify-center relative">
       <div className="flex flex-col lg:justify-between items-center justify-between lg:items-end lg:flex-row mt-10 lg:mt-20">
         {/* Background gradient */}
         <div

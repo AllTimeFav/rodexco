@@ -150,7 +150,7 @@ const ClientTestimonials = () => {
   const currentData = testimonials[currentTestimonial];
 
   return (
-    <div className="w-full py-32 relative overflow-hidden backdrop-blur-sm">
+    <div id='clients' className="w-full py-32 relative overflow-hidden backdrop-blur-sm">
       {/* Global soft dots background */}
       <div 
         className="absolute inset-0 opacity-10"
