@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import GlowButton from './GLowButton';
+import { Link } from 'react-router-dom';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -154,9 +155,9 @@ const Transform = () => {
           Like so many of our creators, unlock the potential of your creativity with Rodexco support and guidance.
         </p>
         
-        <div className="px-4">
+        <Link to='/contact' className="px-4" >
           <GlowButton className='mb-10 text-base md:text-lg px-6 py-2 cursor-pointer' simple={true} onClick={() => navigate('/contact')}>Get in Touch</GlowButton>
-        </div>
+        </Link>
         
         {/* Images Section */}
         <div className="flex -space-x-4 md:-space-x-6 -mb-10 relative z-10">

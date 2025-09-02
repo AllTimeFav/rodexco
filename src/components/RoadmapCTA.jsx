@@ -1,5 +1,6 @@
 import React from "react";
 import GlowButton from "./GLowButton";
+import { Link } from "react-router-dom";
 
 const Avatar = ({ src, alt, className = "" }) => (
 	<img
@@ -65,9 +66,9 @@ const RoadmapCTA = () => {
 					<p className="text-slate-300/90 text-sm">100+ Creators trust Rodexco</p>
 				</div>
 
-				<div className="mt-4">
+				<Link to='contact' className="mt-4">
 					<GlowButton className='cursor-pointer' onClick={() => navigate('/contact')}>Get in Touch</GlowButton>
-				</div>
+				</Link>
 
 				{/* Dotted square centered below the button */}
 				<div className="mt-12 w-full flex justify-center">

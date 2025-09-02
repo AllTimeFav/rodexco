@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { gsap } from 'gsap';
 import GlowButton from './GLowButton';
+import { Link } from 'react-router-dom';
 
 const ClientTestimonials = () => {
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
@@ -181,7 +182,9 @@ const ClientTestimonials = () => {
           <h2 className="text-3xl lg:text-5xl text-white leading-tight">Hear it from our clients</h2>
           <div className="flex items-center gap-6 md:text-right">
             <h3 className="text-lg lg:text-2xl text-white">Ready to Learn More?</h3>
-            <GlowButton className='cursor-pointer' onClick={() => navigate('/contact')}>Get in Touch</GlowButton>
+            <Link to='/contact'>
+              <GlowButton className='cursor-pointer' onClick={() => navigate('/contact')}>Get in Touch</GlowButton>
+            </Link>
           </div>
         </div>
 

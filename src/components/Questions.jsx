@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import GlowButton from "./GLowButton";
+import { Link } from "react-router-dom";
 
 const faqs = [
   {
@@ -114,7 +115,7 @@ const Questions = () => {
               Still can’t find the answer to your question? Submit your application
               to learn more.
             </p>
-            <GlowButton className='cursor-pointer' onClick={() => navigate('/contact')}>Get in Touch</GlowButton>
+            <Link to='/contact'><GlowButton className='cursor-pointer' onClick={() => navigate('/contact')}>Get in Touch</GlowButton></Link>
           </div>
 
           {/* Right column: accordion */}
