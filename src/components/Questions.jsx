@@ -114,7 +114,7 @@ const Questions = () => {
               Still can’t find the answer to your question? Submit your application
               to learn more.
             </p>
-            <GlowButton>Apply Now</GlowButton>
+            <GlowButton className='cursor-pointer' onClick={() => navigate('/contact')}>Get in Touch</GlowButton>
           </div>
 
           {/* Right column: accordion */}

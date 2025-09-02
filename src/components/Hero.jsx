@@ -347,7 +347,7 @@ const Hero = () => {
           100+ Creators trust Rodexco
         </span>
         <div ref={buttonRef}>
-          <GlowButton  className='cursor-pointer' onClick={() => navigate('/contact')}>Apply Now</GlowButton>
+          <GlowButton  className='cursor-pointer' onClick={() => navigate('/contact')}>Get in Touch</GlowButton>
         </div>
       </div>
     </div>

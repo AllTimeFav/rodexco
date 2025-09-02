@@ -66,7 +66,7 @@ const RoadmapCTA = () => {
 				</div>
 
 				<div className="mt-4">
-					<GlowButton className='cursor-pointer'>Apply Now</GlowButton>
+					<GlowButton className='cursor-pointer' onClick={() => navigate('/contact')}>Get in Touch</GlowButton>
 				</div>
 
 				{/* Dotted square centered below the button */}

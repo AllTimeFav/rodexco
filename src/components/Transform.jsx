@@ -155,7 +155,7 @@ const Transform = () => {
         </p>
         
         <div className="px-4">
-          <GlowButton className='mb-10 text-base md:text-lg px-6 py-2' simple={true}>Get Started</GlowButton>
+          <GlowButton className='mb-10 text-base md:text-lg px-6 py-2 cursor-pointer' simple={true} onClick={() => navigate('/contact')}>Get in Touch</GlowButton>
         </div>
         
         {/* Images Section */}
